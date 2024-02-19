@@ -1,0 +1,12 @@
+name: InventoryFramework
+version: ${version}
+main: kr.toxicity.inventory.InventoryFrameworkImpl
+api-version: 1.17
+author: toxicity
+description: A simple framework for inventory.
+load: POSTWORLD
+commands:
+  inventoryframework:
+    aliases: if
+    description: Reload this plugin.
+    usage: /<command>
