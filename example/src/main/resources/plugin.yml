@@ -1,0 +1,13 @@
+name: InventoryExample
+version: test
+main: kr.toxicity.inventory.example.InventoryExample
+api-version: 1.17
+author: toxicity
+description: A test plugin for InventoryFramework.
+load: POSTWORLD
+depend:
+  - InventoryFramework
+commands:
+  testinventory:
+    description: Open the test inventory.
+    usage: /<command>
