@@ -3,8 +3,8 @@ package kr.toxicity.inventory.example;
 import kr.toxicity.inventory.api.InventoryFramework;
 import kr.toxicity.inventory.api.annotation.InventoryPlugin;
 import kr.toxicity.inventory.api.gui.ClickData;
-import kr.toxicity.inventory.api.gui.GuiAnimation;
 import kr.toxicity.inventory.api.gui.GuiExecutor;
+import kr.toxicity.inventory.api.gui.GuiHolder;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
@@ -22,21 +22,21 @@ public class InventoryExample extends JavaPlugin {
                         .append(new TestAsset2())
                         .setExecutor(new GuiExecutor() {
                             @Override
-                            public void init(@NotNull Player player, @NotNull GuiAnimation animation) {
+                            public void init(@NotNull Player player, @NotNull GuiHolder holder) {
                                 player.sendMessage("Hello world!");
                             }
 
                             @Override
-                            public void click(@NotNull Player player, @NotNull ClickData data, @NotNull GuiAnimation animation) {
+                            public void click(@NotNull Player player, @NotNull ClickData data, @NotNull GuiHolder holder) {
                                 player.sendMessage("The clicked slot is " + data.clickedSlot() + "!");
                                 data.setCancelled(true);
                                 if (data.clickedSlot() == 0) {
-                                    animation.toggle(TestAsset.class);
+                                    holder.getAnimation().toggle(TestAsset.class);
                                 }
                             }
 
                             @Override
-                            public void end(@NotNull Player player, @NotNull GuiAnimation animation) {
+                            public void end(@NotNull Player player, @NotNull GuiHolder holder) {
                                 player.sendMessage("Ended!");
                             }
                         })

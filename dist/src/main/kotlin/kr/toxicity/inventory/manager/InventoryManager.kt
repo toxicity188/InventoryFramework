@@ -43,7 +43,7 @@ object InventoryManager: FrameworkManager {
                     cursor,
                     current,
                     e
-                ), holder.animation)
+                ), holder)
             }
         }, PLUGIN)
     }

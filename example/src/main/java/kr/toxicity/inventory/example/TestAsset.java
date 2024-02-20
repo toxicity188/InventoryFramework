@@ -20,7 +20,6 @@ import org.jetbrains.annotations.NotNull;
         yEquation = "10sin(t/10 * pi) - 10"
 )
 @InventoryText(
-        scale = 24,
         multiplier = 0.5,
         y = -10,
         asset = "test.ttf"

@@ -30,7 +30,9 @@ public final class GuiHolder implements InventoryHolder {
     }
 
     public void setInventory(@NotNull Component component) {
-        this.inventory = Bukkit.createInventory(this, this.inventory.getSize(), component);
+        var newInventory = Bukkit.createInventory(this, this.inventory.getSize(), component);
+        newInventory.setContents(this.inventory.getContents());
+        this.inventory = newInventory;
     }
 
     public void setCancelled(boolean cancelled) {

@@ -7,9 +7,8 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 @InventoryText(
-        scale = 24,
         multiplier = 0.5,
-        y = -30,
+        y = -20,
         asset = "test.ttf"
 )
 public class TestAsset2 implements GuiAsset, GuiText {

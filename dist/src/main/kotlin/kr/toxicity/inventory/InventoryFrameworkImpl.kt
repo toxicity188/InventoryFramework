@@ -49,8 +49,14 @@ class InventoryFrameworkImpl: InventoryFramework() {
                     JarFile(getFile[plugin] as File).use { jar ->
                         jar.entries().asIterator().forEach { entry ->
                             if (!entry.isDirectory && entry.name.endsWith("class")) {
+                                fun addClass(clazz: Class<*>) {
+                                    classes.add(clazz)
+                                    clazz.classes.forEach { subClass ->
+                                        addClass(subClass)
+                                    }
+                                }
                                 runCatching {
-                                    classes.add(Class.forName(entry.name.substringBeforeLast(".").replace('/','.')))
+                                    addClass(Class.forName(entry.name.substringBeforeLast(".").replace('/','.')))
                                 }
                             }
                         }

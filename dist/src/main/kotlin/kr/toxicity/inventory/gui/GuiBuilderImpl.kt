@@ -83,7 +83,7 @@ class GuiBuilderImpl: GuiBuilder {
             if (oldHolder is GuiHolder) {
                 holder.parent = oldHolder
             }
-            holder.executor.init(player, holder.animation)
+            holder.executor.init(player, holder)
             player.openInventory(holder.inventory)
             GuiTask {
                 if (!holder.isCancelled && player.openInventory.topInventory.holder === holder) {
@@ -100,7 +100,7 @@ class GuiBuilderImpl: GuiBuilder {
                     false
                 } else {
                     player.closeInventory()
-                    holder.executor.end(player, holder.animation)
+                    holder.executor.end(player, holder)
                     holder.parent?.let { parent ->
                         PLUGIN.taskLater(1) {
                             parent.gui.open(player)
