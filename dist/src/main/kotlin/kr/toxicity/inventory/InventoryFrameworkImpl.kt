@@ -7,16 +7,16 @@ import kr.toxicity.inventory.data.GlobalResource
 import kr.toxicity.inventory.data.PluginInfo
 import kr.toxicity.inventory.data.PluginResource
 import kr.toxicity.inventory.gui.GuiBuilderImpl
-import kr.toxicity.inventory.manager.AnimationManager
-import kr.toxicity.inventory.manager.BackgroundManager
-import kr.toxicity.inventory.manager.InventoryManager
-import kr.toxicity.inventory.manager.TextManager
+import kr.toxicity.inventory.manager.*
 import kr.toxicity.inventory.util.*
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.NamedTextColor
 import org.bukkit.Bukkit
+import org.bukkit.inventory.ItemStack
+import org.bukkit.inventory.meta.ItemMeta
 import org.bukkit.plugin.java.JavaPlugin
 import java.io.File
+import java.util.function.Consumer
 import java.util.jar.JarEntry
 import java.util.jar.JarFile
 
@@ -24,6 +24,7 @@ class InventoryFrameworkImpl: InventoryFramework() {
 
     private val info = mutableListOf<PluginInfo>()
     private val managers = listOf(
+        ConfigManager,
         BackgroundManager,
         AnimationManager,
         TextManager,
@@ -96,6 +97,11 @@ class InventoryFrameworkImpl: InventoryFramework() {
     }
 
     override fun builder(): GuiBuilder = GuiBuilderImpl()
+    override fun getEmptyItem(metaConsumer: Consumer<ItemMeta>): ItemStack {
+        return ConfigManager.getEmptyItem {
+            metaConsumer.accept(it)
+        }
+    }
 
     override fun loadAssets(prefix: String, dir: File) {
         JarFile(file).use {

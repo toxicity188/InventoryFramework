@@ -12,14 +12,25 @@ class GlobalResource {
     init {
         PLUGIN.loadAssets("pack", build)
     }
-
-    val assets = build
+    private val parent = build
         .subFolder("assets")
+
+    private val assets = parent
         .subFolder("inventoryframework")
+    private val minecraftAssets = parent
+        .subFolder("minecraft")
 
     val font = assets
         .subFolder("font")
 
     val textures = assets
         .subFolder("textures")
+
+    val models = assets
+        .subFolder("models")
+        .subFolder("item")
+
+    val minecraftModels = minecraftAssets
+        .subFolder("models")
+        .subFolder("item")
 }
