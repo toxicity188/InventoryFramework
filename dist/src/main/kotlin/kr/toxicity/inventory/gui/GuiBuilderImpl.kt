@@ -87,16 +87,18 @@ class GuiBuilderImpl: GuiBuilder {
             player.openInventory(holder.inventory)
             GuiTask {
                 if (!holder.isCancelled && player.openInventory.topInventory.holder === holder) {
-                    var finalComp = comp
-                    renderer.values.forEach {
-                        if (it.enabled) {
-                            val next = it.next()
-                            finalComp += next + NEGATIVE_ONE_SPACE_COMPONENT + NEW_LAYER + (-next.width).toSpaceComponent()
+                    if (renderer.isNotEmpty()) {
+                        var finalComp = comp
+                        renderer.values.forEach {
+                            if (it.enabled) {
+                                val next = it.next()
+                                finalComp += next + NEGATIVE_ONE_SPACE_COMPONENT + NEW_LAYER + (-next.width).toSpaceComponent()
+                            }
                         }
+                        holder.setInventory(finalComp.component)
+                        player.openInventory(holder.inventory)
+                        holder.isCancelled = false
                     }
-                    holder.setInventory(finalComp.component)
-                    player.openInventory(holder.inventory)
-                    holder.isCancelled = false
                     false
                 } else {
                     player.closeInventory()
