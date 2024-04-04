@@ -7,6 +7,7 @@ import kr.toxicity.inventory.data.GlobalResource
 import kr.toxicity.inventory.data.PluginInfo
 import kr.toxicity.inventory.data.PluginResource
 import kr.toxicity.inventory.util.PLUGIN
+import kr.toxicity.inventory.util.asyncTaskLater
 import org.bukkit.Bukkit
 import org.bukkit.Material
 import org.bukkit.entity.Player
@@ -15,8 +16,10 @@ import org.bukkit.event.Listener
 import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.event.inventory.InventoryCloseEvent
 import org.bukkit.inventory.ItemStack
+import java.util.UUID
 
 object InventoryManager: FrameworkManager {
+    private val delayMap = HashSet<UUID>()
     override fun start(pluginInfo: List<PluginInfo>) {
         Bukkit.getPluginManager().registerEvents(object : Listener {
             @EventHandler
@@ -29,6 +32,12 @@ object InventoryManager: FrameworkManager {
             @EventHandler
             fun click(e: InventoryClickEvent) {
                 val player = e.whoClicked as? Player ?: return
+                if (delayMap.add(player.uniqueId)) PLUGIN.asyncTaskLater(4) {
+                    delayMap.remove(player.uniqueId)
+                } else {
+                    e.isCancelled = true
+                    return
+                }
                 val holder = player.openInventory.topInventory.holder as? GuiHolder ?: return
                 val cursor = e.cursor
                 val current = e.currentItem ?: ItemStack(Material.AIR)

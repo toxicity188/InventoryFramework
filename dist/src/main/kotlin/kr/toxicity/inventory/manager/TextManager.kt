@@ -14,7 +14,6 @@ import java.awt.Font
 import java.awt.RenderingHints
 import java.awt.image.BufferedImage
 import java.io.File
-import kotlin.math.ceil
 
 object TextManager: FrameworkManager {
 
@@ -53,7 +52,7 @@ object TextManager: FrameworkManager {
                     PLUGIN.warn("This file doesn't exist: ${targetFile.name} in ${resources.info.plugin.name}")
                     return@search
                 }
-                val fontHeight = ceil(text.scale.toDouble() * 1.4).toInt()
+                val fontHeight = Math.round(text.scale.toDouble() * 1.4).toInt()
                 val saveLocation = "${targetFile.nameWithoutExtension.lowercase()}_${text.scale}"
                 val array = JsonArray().apply {
                     add(JsonObject().apply {
@@ -73,7 +72,7 @@ object TextManager: FrameworkManager {
                                         addProperty("type", "bitmap")
                                         addProperty("file", pair.first)
                                         addProperty("ascent", text.y)
-                                        addProperty("height", ceil(fontHeight.toDouble() * text.multiplier).toInt())
+                                        addProperty("height", Math.round(fontHeight.toDouble() * text.multiplier).toInt())
                                         add("chars", pair.second)
                                     })
                                 }
@@ -138,7 +137,7 @@ object TextManager: FrameworkManager {
                                         addProperty("type", "bitmap")
                                         addProperty("file", fileName)
                                         addProperty("ascent", text.y)
-                                        addProperty("height", ceil(fontHeight.toDouble() * text.multiplier).toInt())
+                                        addProperty("height", Math.round(fontHeight.toDouble() * text.multiplier).toInt())
                                         add("chars", charJson)
                                     })
                                     charJsonList.add(fileName to charJson)
@@ -158,7 +157,7 @@ object TextManager: FrameworkManager {
                                 val charWidth = HashMap<Char, Int>().apply {
                                     map.entries.forEach { entry ->
                                         entry.value.forEach {
-                                            put(it.first, ceil(entry.key * text.multiplier).toInt())
+                                            put(it.first, Math.round(entry.key * text.multiplier).toInt())
                                         }
                                     }
                                 }
