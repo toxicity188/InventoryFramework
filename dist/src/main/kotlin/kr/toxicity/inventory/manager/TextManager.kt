@@ -12,6 +12,7 @@ import net.kyori.adventure.key.Key
 import java.awt.AlphaComposite
 import java.awt.Font
 import java.awt.RenderingHints
+import java.awt.font.FontRenderContext
 import java.awt.image.BufferedImage
 import java.io.File
 
@@ -32,6 +33,8 @@ object TextManager: FrameworkManager {
         val chars: List<Pair<String,JsonArray>>,
         val widthMap: Map<Char, Int>
     )
+
+    private val frc = FontRenderContext(null, true, true)
 
     override fun reload(pluginResources: List<PluginResource>, globalResource: GlobalResource) {
         fontMap.clear()
@@ -96,7 +99,7 @@ object TextManager: FrameworkManager {
                                                 font = fontInstance
                                                 renderingHints[RenderingHints.KEY_TEXT_ANTIALIASING] = RenderingHints.VALUE_TEXT_ANTIALIAS_ON
                                                 renderingHints[RenderingHints.KEY_FRACTIONALMETRICS] = RenderingHints.VALUE_FRACTIONALMETRICS_ON
-                                                drawString(char.toString(), 0, text.scale)
+                                                fill(fontInstance.createGlyphVector(frc, char.toString()).getOutline(0F , text.scale.toFloat()))
                                                 dispose()
                                             }
                                         }.removeEmptyWidth()?.let { image ->

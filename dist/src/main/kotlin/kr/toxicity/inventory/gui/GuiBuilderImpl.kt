@@ -86,7 +86,7 @@ class GuiBuilderImpl: GuiBuilder {
             holder.executor.init(player, holder)
             player.openInventory(holder.inventory)
             GuiTask {
-                if (!holder.isCancelled && player.openInventory.topInventory.holder === holder) {
+                if (player.isValid && !holder.isCancelled && player.openInventory.topInventory.holder === holder) {
                     if (renderer.isNotEmpty()) {
                         var finalComp = comp
                         renderer.values.forEach {
