@@ -20,13 +20,21 @@ class GuiBuilderImpl: GuiBuilder {
 
     private val assets = ArrayList<GuiAsset>()
     private var executor: GuiExecutor = GuiExecutor.EMPTY
+    private var row = 6
 
     override fun append(asset: GuiAsset): GuiBuilder {
         assets.add(asset)
         return this
     }
 
-    override fun setExecutor(executor: GuiExecutor): GuiBuilder {
+    override fun rows(row: Int): GuiBuilder {
+        if (row < 1) throw RuntimeException("row < 1")
+        if (row > 6) throw RuntimeException("row > 6")
+        this.row = row
+        return this
+    }
+
+    override fun executor(executor: GuiExecutor): GuiBuilder {
         this.executor = executor
         return this
     }
@@ -78,7 +86,7 @@ class GuiBuilderImpl: GuiBuilder {
                     renderer.remove(asset)
                 }
 
-            }, 54)
+            }, row * 9)
             val oldHolder = player.openInventory.topInventory.holder
             if (oldHolder is GuiHolder) {
                 holder.parent = oldHolder

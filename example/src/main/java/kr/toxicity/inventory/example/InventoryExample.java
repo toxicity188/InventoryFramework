@@ -20,7 +20,7 @@ public class InventoryExample extends JavaPlugin {
                 InventoryFramework.getInstance().builder()
                         .append(new TestAsset())
                         .append(new TestAsset2())
-                        .setExecutor(new GuiExecutor() {
+                        .executor(new GuiExecutor() {
                             @Override
                             public void init(@NotNull Player player, @NotNull GuiHolder holder) {
                                 player.sendMessage("Hello world!");

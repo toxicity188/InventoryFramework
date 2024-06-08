@@ -9,7 +9,7 @@ allprojects {
     apply(plugin = "kotlin")
 
     group = "kr.toxicity.inventory"
-    version = "1.3"
+    version = "1.4"
 
     repositories {
         mavenCentral()
