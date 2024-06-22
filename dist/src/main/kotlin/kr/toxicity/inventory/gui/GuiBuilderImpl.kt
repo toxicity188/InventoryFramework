@@ -14,7 +14,9 @@ import kr.toxicity.inventory.manager.AnimationManager
 import kr.toxicity.inventory.manager.BackgroundManager
 import kr.toxicity.inventory.manager.TextManager
 import kr.toxicity.inventory.util.*
+import net.kyori.adventure.text.Component
 import org.bukkit.entity.Player
+import kotlin.math.roundToInt
 
 class GuiBuilderImpl: GuiBuilder {
 
@@ -46,18 +48,39 @@ class GuiBuilderImpl: GuiBuilder {
     private inner class GuiImpl: Gui {
         override fun open(player: Player) {
             var comp = EMPTY_WIDTH_COMPONENT
+            var maxWidth = 0
+            val assetsComp = ArrayList<Pair<GuiAsset.Align, WidthComponent>>()
             assets.forEach {
                 BackgroundManager.getBackground(it.javaClass)?.let { background ->
-                    comp += background + NEGATIVE_ONE_SPACE_COMPONENT + NEW_LAYER + (-background.width).toSpaceComponent()
+                    val addComp = background + NEGATIVE_ONE_SPACE_COMPONENT + NEW_LAYER
+                    if (maxWidth < addComp.width) maxWidth = addComp.width
+                    assetsComp.add(it.align to addComp)
                 }
                 if (it is GuiText) {
                     val text = it.text(player)
                     TextManager.getText(it.javaClass)?.let { converter ->
-                        val textComponent = converter.toComponent(text)
-                        comp += textComponent + (-textComponent.width).toSpaceComponent()
+                        val addComp = converter.toComponent(text)
+                        if (maxWidth < addComp.width) maxWidth = addComp.width
+                        assetsComp.add(it.align to addComp)
                     }
                 }
             }
+            assetsComp.forEach {
+                when (it.first) {
+                    GuiAsset.Align.LEFT -> {
+                        comp += it.second + (-it.second.width).toSpaceComponent()
+                    }
+                    GuiAsset.Align.CENTER -> {
+                        val value = ((maxWidth - it.second.width).toDouble() / 2).roundToInt()
+                        comp += value.toSpaceComponent() + it.second + (-value - it.second.width).toSpaceComponent()
+                    }
+                    GuiAsset.Align.RIGHT -> {
+                        val value = maxWidth - it.second.width
+                        comp += value.toSpaceComponent() + it.second + (-value - it.second.width).toSpaceComponent()
+                    }
+                }
+            }
+
             val renderer = mutableMapOf<Class<*>, AnimationRenderer>().apply {
                 assets.forEach {
                     AnimationManager.getAnimation(it.javaClass)?.let { animation ->
